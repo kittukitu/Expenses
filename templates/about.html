@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About - Expense Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="text-gray-800 bg-gray-100">
+
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <!-- Sidebar -->
+<aside class="w-64 p-5 space-y-6 bg-white shadow-md">
+  <div class="flex items-center justify-between">
+    <h2 class="text-xl font-bold text-indigo-600">
+      <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
+    </h2>
+  </div>
+  <nav class="space-y-3">
+    <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
+    </a>
+    <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <i class="mr-2 fa-solid fa-user"></i>Profile
+    </a>
+    <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <i class="mr-2 fa-solid fa-plus"></i>Add Expense
+    </a>
+    <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History
+    </a>
+
+    <a href="{{ url_for('about') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded">
+      <i class="mr-2 fa-solid fa-circle-info"></i>About
+    </a>
+    {% if user.role == 'admin' %}
+    <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100">
+      <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
+    </a>
+    {% endif %}
+
+    <!-- New Feedback Link -->
+    <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <i class="mr-2 fa-solid fa-comments"></i>Feedback
+    </a>
+
+    
+    <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200">
+      <i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout
+    </a>
+  </nav>
+</aside>
+
+
+  <!-- Main Content -->
+  <main class="flex-1 p-10">
+    <div class="w-full max-w-6xl p-10 mx-auto bg-white rounded-lg shadow-lg">
+      <h1 class="mb-6 text-3xl font-bold text-indigo-700">About Expense Management System</h1>
+
+      <section class="mb-8">
+        <h2 class="mb-2 text-2xl font-semibold">What is Expense Management?</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+          Expense management refers to the process of tracking, analyzing, and controlling the spending habits of an individual or organization. 
+          It involves recording all expenses to understand where money is being spent and finding ways to optimize spending to meet financial goals.
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="mb-2 text-2xl font-semibold">Why is Expense Management Important?</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+          Proper expense management helps prevent overspending, improves budgeting accuracy, and ensures financial stability.
+          By regularly reviewing expenses, users can identify unnecessary costs, allocate funds effectively, and save money.
+          For businesses, it also ensures compliance with financial policies and aids in financial reporting.
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <h2 class="mb-2 text-2xl font-semibold">Purpose of This Expense Management System</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+          This Expense Management System is designed to simplify the way users manage their personal or organizational finances.
+          It allows users to easily add and categorize expenses, view detailed history, track budgets, and analyze spending patterns.
+          The system promotes better financial decisions by providing insightful analytics and reports.
+          Ultimately, it aims to empower users to take control of their money and achieve their financial goals efficiently.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="mb-2 text-2xl font-semibold">Key Features</h2>
+        <ul class="space-y-2 text-lg text-gray-700 list-disc list-inside">
+          <li>Add, edit, and delete expenses quickly and easily.</li>
+          <li>Categorize expenses for better organization and insights.</li>
+          <li>Track budgets and get alerts when approaching limits.</li>
+          <li>View detailed reports and analytics on spending trends.</li>
+          <li>Secure user authentication with role-based access.</li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="mt-10 text-center text-gray-500">
+      <p>&copy; 2025 Expense Management System. All rights reserved.</p>
+    </footer>
+  </main>
+</div>
+
+</body>
+</html>

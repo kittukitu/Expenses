@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ show: false }" x-init="show = true" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Management Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        /* Floating keyframe animations */
+        @keyframes float1 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(5deg); } }
+        @keyframes float2 { 0%, 100% { transform: translateX(0) rotate(0deg); } 50% { transform: translateX(30px) rotate(-5deg); } }
+        @keyframes float3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(25px); } }
+        @keyframes float4 { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-25px); } }
+        @keyframes float5 { 0%, 100% { transform: translate(0); } 50% { transform: translate(-20px, 20px); } }
+
+        .animate-float1 { animation: float1 8s ease-in-out infinite; }
+        .animate-float2 { animation: float2 10s ease-in-out infinite; }
+        .animate-float3 { animation: float3 9s ease-in-out infinite; }
+        .animate-float4 { animation: float4 11s ease-in-out infinite; }
+        .animate-float5 { animation: float5 12s ease-in-out infinite; }
+    </style>
+</head>
+
+<body class="relative flex flex-col justify-between min-h-screen overflow-hidden text-white bg-gradient-to-r from-indigo-900 via-purple-600 to-pink-400">
+
+    <!-- Animated Floating Icons Background -->
+    <div class="absolute inset-0 pointer-events-none -z-10">
+        <!-- Larger, clearer, slightly opaque icons -->
+        <div class="absolute text-6xl opacity-30 animate-float1 left-10 top-20">👗</div>
+        <div class="absolute text-6xl opacity-30 animate-float2 right-16 top-40">✈️</div>
+        <div class="absolute text-6xl opacity-30 animate-float3 left-20 bottom-28">💄</div>
+        <div class="absolute text-6xl opacity-30 animate-float4 right-24 bottom-20">🍕</div>
+        <div class="absolute text-6xl opacity-30 animate-float5 left-1/2 top-1/2">🏀</div>
+        <div class="absolute text-6xl opacity-30 animate-float3 left-1/4 top-1/3">🎮</div>
+        <div class="absolute text-6xl opacity-30 animate-float4 right-1/3 top-10">🛍️</div>
+       
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center flex-grow p-6">
+        <div x-show="show" x-transition.duration.1000ms class="w-full max-w-4xl p-10 text-center bg-white shadow-lg bg-opacity-10 rounded-3xl backdrop-blur-sm">
+            
+            <h1 class="mb-4 text-5xl font-extrabold text-white drop-shadow-lg">Expense Management Application 💸</h1>
+
+            <p class="mb-6 text-lg text-white/80">
+                Track your expenses, set budgets, and gain insights into your spending habits. <br>
+                Built with Flask, this app helps you take control of your financial future.
+            </p>
+
+            <div class="flex flex-col justify-center gap-4 mt-6 sm:flex-row">
+                <a href="{{ url_for('login') }}"
+                    class="px-6 py-3 font-semibold text-indigo-900 transition duration-300 transform bg-white rounded-full shadow-md hover:bg-gray-200 hover:scale-105">
+                    View Summary
+                </a>
+                <a href="{{ url_for('register') }}"
+                    class="px-6 py-3 font-semibold text-white transition duration-300 transform bg-indigo-700 rounded-full shadow-md hover:bg-indigo-800 hover:scale-105">
+                    Explore
+                </a>
+            </div>
+
+            <!-- Features Section -->
+            <div class="grid grid-cols-1 gap-6 mt-12 text-white sm:grid-cols-3">
+                <div class="p-4 transition bg-white shadow-md rounded-xl bg-opacity-10 backdrop-blur-md hover:scale-105">
+                    <div class="mb-2 text-4xl">📊</div>
+                    <h2 class="text-xl font-semibold">Analytics Dashboard</h2>
+                    <p class="text-sm text-white/80">Visualize your spending patterns through intuitive charts and graphs.</p>
+                </div>
+                <div class="p-4 transition bg-white shadow-md rounded-xl bg-opacity-10 backdrop-blur-md hover:scale-105">
+                    <div class="mb-2 text-4xl">🧠</div>
+                    <h2 class="text-xl font-semibold">Smart Reports</h2>
+                    <p class="text-sm text-white/80">Generate intelligent reports that summarize your monthly and category-wise spending.</p>
+                </div>
+                <div class="p-4 transition bg-white shadow-md rounded-xl bg-opacity-10 backdrop-blur-md hover:scale-105">
+                    <div class="mb-2 text-4xl">📁</div>
+                    <h2 class="text-xl font-semibold">Expense Categories</h2>
+                    <p class="text-sm text-white/80">Organize your expenses by category for better insights and control.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="p-4 text-center text-white bg-black bg-opacity-30 backdrop-blur-md">
+        &copy; 2025 Expense Management Application. Built with ❤️ using Flask & Tailwind CSS.
+    </footer>
+
+</body>
+
+</html>
