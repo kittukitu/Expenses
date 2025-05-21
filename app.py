@@ -181,7 +181,10 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
+            flash(f"Welcome, {user.username}! You have logged in successfully.", "success")
             return redirect(url_for('dashboard'))
+        else:
+            flash("Invalid email or password", "danger")  # Flash message on failure
     return render_template('login.html', form=form)
 
 
@@ -249,6 +252,7 @@ def forgot_password():
             msg.body = f"Your OTP to reset the password is {otp}."
             mail.send(msg)
 
+            flash("OTP sent successfully to your email.", "success")
             return redirect(url_for('reset_password'))
         else:
             flash("Email not found in our system.", "danger")
@@ -258,20 +262,28 @@ def forgot_password():
 @app.route('/reset-password', methods=['GET', 'POST'])
 def reset_password():
     form = ResetPasswordForm()
-    if form.validate_on_submit():
-        if form.otp.data == session.get('otp'):
+
+    if request.method == 'POST':
+        if not form.validate():
+            flash("Please fill out all fields correctly.", "danger")
+        elif form.new_password.data != form.confirm_password.data:
+            flash("New Password and Confirm Password do not match", "danger")
+        elif form.otp.data != session.get('otp'):
+            flash("Invalid OTP", "danger")
+        else:
             user = User.query.filter_by(email=session.get('reset_email')).first()
             if user:
                 hashed_pw = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
                 user.password = hashed_pw
                 db.session.commit()
-                session.pop('otp')
-                session.pop('reset_email')
+                session.pop('otp', None)
+                session.pop('reset_email', None)
                 flash("Password has been reset. Please login.", "success")
                 return redirect(url_for('login'))
-        else:
-            flash("Invalid OTP", "danger")
+
     return render_template('reset_password.html', form=form)
+
+
 
 #PROFILE
 @app.route('/profile')
@@ -502,7 +514,7 @@ def export_expenses_pdf():
 
 @app.route('/export_expenses_excel')
 def export_expenses_excel():
-    # Get expenses for current user
+    # Get expenses for current user/
     expenses = Expense.query.filter_by(user_id=current_user.id).order_by(Expense.date.desc()).all()
 
     # Create DataFrame
@@ -538,6 +550,50 @@ def set_budget():
     except Exception as e:
         flash('Error updating budget.', 'danger')
     return redirect(url_for('dashboard'))
+
+class ReviewForm(FlaskForm):
+    response = TextAreaField('Response', validators=[InputRequired()], render_kw={"placeholder": "Write your review response..."})
+    submit = SubmitField('Send Review')
+
+@app.route('/admin/review/<int:feedback_id>', methods=['GET', 'POST'])
+@login_required
+def review_feedback(feedback_id):
+    if current_user.role != 'admin':
+        flash("Unauthorized access", "danger")
+        return redirect(url_for('dashboard'))
+
+    feedback = Feedback.query.get_or_404(feedback_id)
+    form = ReviewForm()
+
+    if form.validate_on_submit():
+        try:
+            msg = Message(
+                subject=f"Response to your feedback: {feedback.subject}",
+                sender=app.config['MAIL_USERNAME'],
+                recipients=[feedback.user.email]
+            )
+            msg.body = f"""Hi {feedback.user.username},
+
+Thank you for your feedback:
+
+"{feedback.message}"
+
+Here is our response:
+
+"{form.response.data}"
+
+Best regards,
+Admin Team
+"""
+            mail.send(msg)
+            flash("Review response sent successfully!", "success")
+        except Exception as e:
+            flash("Failed to send review response via email.", "danger")
+
+        return redirect(url_for('admin_feedback'))
+
+    return render_template('review_feedback.html', feedback=feedback, form=form, user=current_user)
+
 
 with app.app_context():
     db.create_all()

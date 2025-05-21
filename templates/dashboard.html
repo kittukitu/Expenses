@@ -14,6 +14,22 @@
 </head>
 
 <body class="text-gray-900 transition-all duration-300 bg-gray-100">
+ <!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div id="flash-messages" class="fixed z-50 w-full max-w-md transform -translate-x-1/2 top-5 left-1/2">
+      {% for category, message in messages %}
+        <div class="mb-4 p-4 rounded-lg text-white text-center shadow-lg
+          {% if category == 'success' %} bg-green-500
+          {% elif category == 'danger' %} bg-red-500
+          {% elif category == 'warning' %} bg-yellow-400 text-black
+          {% else %} bg-blue-500 {% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 
     <!-- Sidebar -->
     <div class="flex min-h-screen">
@@ -240,6 +256,17 @@
             }
         });
     </script>
+    <script>
+  setTimeout(() => {
+    const flash = document.getElementById('flash-messages');
+    if (flash) {
+      flash.style.transition = 'opacity 0.5s ease-out';
+      flash.style.opacity = '0';
+      setTimeout(() => flash.remove(), 500);
+    }
+  }, 5000);
+</script>
+
 </body>
 
 </html>

@@ -1,0 +1,26 @@
+
+
+{% block content %}
+<div class="max-w-3xl p-6 mx-auto mt-10 bg-white rounded shadow">
+  <h2 class="mb-4 text-2xl font-bold">Review Feedback</h2>
+
+  <div class="mb-4">
+    <p><strong>User:</strong> {{ feedback.user.username }}</p>
+    <p><strong>Subject:</strong> {{ feedback.subject }}</p>
+    <p><strong>Message:</strong> {{ feedback.message }}</p>
+    <p><strong>Date:</strong> {{ feedback.date_submitted.strftime('%Y-%m-%d %H:%M') }}</p>
+  </div>
+
+  <form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="mb-4">
+      {{ form.response.label(class="block font-semibold text-gray-700") }}
+      {{ form.response(class="w-full px-3 py-2 border rounded", rows="5") }}
+    </div>
+    <div>
+      {{ form.submit(class="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700") }}
+      <a href="{{ url_for('admin_feedback') }}" class="ml-3 text-blue-600 hover:underline">Back</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
