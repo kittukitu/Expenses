@@ -119,12 +119,8 @@
 
       <!-- Export Buttons -->
       <div class="flex gap-4 mt-6">
-        <a href="{{ url_for('export_expenses_pdf') }}" class="px-4 py-2 text-white bg-indigo-500 rounded hover:bg-indigo-600">
-          <i class="mr-2 fa-solid fa-file-pdf"></i>Download PDF
-        </a>
-        <a href="{{ url_for('export_expenses_excel') }}" class="px-4 py-2 text-white bg-green-500 rounded hover:bg-green-600">
-          <i class="mr-2 fa-solid fa-file-excel"></i>Download Excel
-        </a>
+        <a href="{{ url_for('export_expenses_pdf', start_date=request.args.get('start_date', ''), end_date=request.args.get('end_date', ''), category=request.args.get('category', '')) }}" class="p-2 text-white bg-blue-600 rounded hover:bg-blue-800">Download PDF</a>
+        <a href="{{ url_for('export_expenses_excel', start_date=request.args.get('start_date', ''), end_date=request.args.get('end_date', ''), category=request.args.get('category', '')) }}" class="p-2 text-white bg-green-600 rounded hover:bg-green-800">Download Excel</a>
       </div>
 
       <!-- Charts -->

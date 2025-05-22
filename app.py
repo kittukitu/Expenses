@@ -14,6 +14,8 @@ import io
 import pandas as pd
 from datetime import datetime
 from sqlalchemy import extract
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
 from flask import send_file
 from calendar import monthrange
 from werkzeug.utils import secure_filename
@@ -525,9 +527,23 @@ def about():
 
 
 @app.route('/export_expenses_pdf')
+@login_required
 def export_expenses_pdf():
-    # Get expenses for current user
-    expenses = Expense.query.filter_by(user_id=current_user.id).order_by(Expense.date.desc()).all()
+    user_id = current_user.id
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    category = request.args.get('category')
+
+    query = Expense.query.filter_by(user_id=user_id)
+
+    if start_date:
+        query = query.filter(Expense.date >= start_date)
+    if end_date:
+        query = query.filter(Expense.date <= end_date)
+    if category:
+        query = query.filter_by(category=category)
+
+    expenses = query.order_by(Expense.date.desc()).all()
 
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
@@ -552,11 +568,24 @@ def export_expenses_pdf():
     )
 
 @app.route('/export_expenses_excel')
+@login_required
 def export_expenses_excel():
-    # Get expenses for current user/
-    expenses = Expense.query.filter_by(user_id=current_user.id).order_by(Expense.date.desc()).all()
+    user_id = current_user.id
+    start_date = request.args.get('start_date')
+    end_date = request.args.get('end_date')
+    category = request.args.get('category')
 
-    # Create DataFrame
+    query = Expense.query.filter_by(user_id=user_id)
+
+    if start_date:
+        query = query.filter(Expense.date >= start_date)
+    if end_date:
+        query = query.filter(Expense.date <= end_date)
+    if category:
+        query = query.filter_by(category=category)
+
+    expenses = query.order_by(Expense.date.desc()).all()
+
     data = [{
         'Date': exp.date.strftime('%Y-%m-%d'),
         'Category': exp.category,
