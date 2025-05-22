@@ -1,117 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="transition duration-300">
 <head>
-    <meta charset="UTF-8" />
-    <title>Profile</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <meta charset="UTF-8" />
+  <title>Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Enable Tailwind Dark Mode -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
+
+  <style>
+    .toggle-checkbox:checked + .toggle-label .ball {
+      transform: translateX(100%);
+    }
+  </style>
 </head>
-<body class="text-gray-900 bg-gray-100">
+<body class="text-gray-900 transition duration-300 bg-gray-100 dark:bg-gray-900 dark:text-gray-100">
 
 <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-64 p-5 space-y-6 bg-white shadow-md">
-        <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-indigo-600">
-                <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
-            </h2>
-        </div>
-        <nav class="space-y-3">
-            <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100"><i class="mr-2 fa-solid fa-chart-line"></i>Dashboard</a>
-            <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 bg-indigo-100 rounded"><i class="mr-2 fa-solid fa-user"></i>Profile</a>
-            <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100"><i class="mr-2 fa-solid fa-plus"></i>Add Expense</a>
-            <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100"><i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History</a>
-            <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100"><i class="mr-2 fa-solid fa-circle-info"></i>About</a>
-            {% if user.role == 'admin' %}
-            <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100"><i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel</a>
-            {% endif %}
-            <!-- New Feedback Link -->
-    <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-comments"></i>Feedback
-    </a>
-            <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200"><i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout</a>
-        </nav>
-    </aside>
-
-    <!-- Main Content -->
-<main class="flex flex-col items-center flex-1 min-h-screen p-8 bg-gradient-to-tr from-indigo-200 via-indigo-100 to-white">
-  <div class="w-full max-w-4xl p-12 bg-white border border-indigo-300 shadow-2xl rounded-3xl">
-    <h2 class="pb-6 mb-12 text-5xl font-extrabold tracking-wide text-center text-indigo-700 border-b">Your Profile</h2>
-    
-    <!-- Profile Image centered at top -->
-   <div class="flex flex-col items-center mb-12">
-  {% if user.profile_pic %}
-    <img
-      src="{{ url_for('static', filename='profile_pics/' + user.profile_pic) }}"
-      alt="Profile Picture"
-      class="object-cover w-56 h-48 border-8 border-indigo-500 rounded-full shadow-lg"
-    />
-  {% else %}
-    <img
-      src="{{ url_for('static', filename='profile_pics/default.png') }}"
-      alt="Default Profile Picture"
-      class="object-cover w-56 h-56 border-8 border-indigo-300 rounded-full shadow-lg"
-    />
-  {% endif %}
-  
-  <div class="mt-6 text-2xl font-bold text-center text-indigo-700">
-    {{ user.username }}
-  </div>
-</div>
+  <!-- Sidebar -->
+  <aside class="w-64 p-5 space-y-6 bg-white shadow-md dark:bg-gray-800">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
+        <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
+      </h2>
+      <!-- Dark/Light mode toggle button -->
+      <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 focus:outline-none">
+        <i id="theme-icon" class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+    <nav class="space-y-3">
+      <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 dark:text-indigo-300"><i class="mr-2 fa-solid fa-chart-line"></i>Dashboard</a>
+      <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 bg-indigo-100 rounded dark:bg-indigo-900 dark:text-indigo-300"><i class="mr-2 fa-solid fa-user"></i>Profile</a>
+      <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 dark:text-indigo-300"><i class="mr-2 fa-solid fa-plus"></i>Add Expense</a>
+      <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 dark:text-indigo-300"><i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History</a>
+      <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 dark:text-indigo-300"><i class="mr-2 fa-solid fa-circle-info"></i>About</a>
+      {% if user.role == 'admin' %}
+      <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900"><i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel</a>
+      {% endif %}
+      <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:hover:bg-indigo-900 dark:text-indigo-300"><i class="mr-2 fa-solid fa-comments"></i>Feedback</a>
+      <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"><i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout</a>
+    </nav>
 
     
-    <!-- User Details grid full width below image (without Member Since) -->
-    <div class="grid grid-cols-1 gap-8 text-xl font-semibold text-indigo-900 md:grid-cols-2">
-     
-      
-      <div class="flex items-center min-w-0 p-6 space-x-4 shadow-sm bg-indigo-50 rounded-xl">
-        <i class="flex-shrink-0 text-indigo-500 fa-solid fa-envelope fa-2xl"></i>
-        <div class="min-w-0 break-words">
-          <p class="text-sm text-indigo-600">Email</p>
-          <p>{{ user.email }}</p>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex flex-col items-center flex-1 min-h-screen p-8 transition duration-300 bg-gradient-to-tr from-indigo-200 via-indigo-100 to-white dark:from-gray-800 dark:via-gray-900 dark:to-gray-800">
+    <div class="w-full max-w-4xl p-12 bg-white border border-indigo-300 shadow-2xl rounded-3xl dark:bg-gray-800 dark:border-indigo-600">
+      <h2 class="pb-6 mb-12 text-5xl font-extrabold tracking-wide text-center text-indigo-700 border-b dark:text-indigo-400 dark:border-indigo-500">Your Profile</h2>
+
+      <!-- Profile Image -->
+      <div class="flex flex-col items-center mb-12">
+        {% if user.profile_pic %}
+        <img src="{{ url_for('static', filename='profile_pics/' + user.profile_pic) }}" alt="Profile Picture" class="object-cover w-56 h-56 border-8 border-indigo-500 rounded-full shadow-lg">
+        {% else %}
+        <img src="{{ url_for('static', filename='profile_pics/default.png') }}" alt="Default Profile Picture" class="object-cover w-56 h-56 border-8 border-indigo-300 rounded-full shadow-lg">
+        {% endif %}
+        <div class="mt-6 text-2xl font-bold text-center text-indigo-700 dark:text-indigo-300">
+          {{ user.username }}
         </div>
       </div>
 
-      <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 rounded-xl">
-        <i class="text-indigo-500 fa-solid fa-phone fa-2xl"></i>
-        <div>
-          <p class="text-sm text-indigo-600">Phone</p>
-          <p>{{ user.phone or 'Not provided' }}</p>
+      <!-- User Details -->
+      <div class="grid grid-cols-1 gap-8 text-xl font-semibold text-indigo-900 dark:text-indigo-100 md:grid-cols-2">
+        <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 dark:bg-gray-700 rounded-xl">
+          <i class="flex-shrink-0 text-indigo-500 fa-solid fa-envelope fa-2xl"></i>
+          <div>
+            <p class="text-sm text-indigo-600 dark:text-indigo-300">Email</p>
+            <p>{{ user.email }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 dark:bg-gray-700 rounded-xl">
+          <i class="text-indigo-500 fa-solid fa-phone fa-2xl"></i>
+          <div>
+            <p class="text-sm text-indigo-600 dark:text-indigo-300">Phone</p>
+            <p>{{ user.phone or 'Not provided' }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 dark:bg-gray-700 rounded-xl">
+          <i class="text-indigo-500 fa-solid fa-location-dot fa-2xl"></i>
+          <div>
+            <p class="text-sm text-indigo-600 dark:text-indigo-300">Location</p>
+            <p>{{ user.location or 'Not provided' }}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 dark:bg-gray-700 rounded-xl">
+          <i class="text-indigo-500 fa-solid fa-venus-mars fa-2xl"></i>
+          <div>
+            <p class="text-sm text-indigo-600 dark:text-indigo-300">Gender</p>
+            <p class="capitalize">{{ user.gender or 'Not specified' }}</p>
+          </div>
         </div>
       </div>
-      
-      <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 rounded-xl">
-        <i class="text-indigo-500 fa-solid fa-location-dot fa-2xl"></i>
-        <div>
-          <p class="text-sm text-indigo-600">Location</p>
-          <p>{{ user.location or 'Not provided' }}</p>
-        </div>
-      </div>
-      
-      <div class="flex items-center p-6 space-x-4 shadow-sm bg-indigo-50 rounded-xl">
-        <i class="text-indigo-500 fa-solid fa-venus-mars fa-2xl"></i>
-        <div>
-          <p class="text-sm text-indigo-600">Gender</p>
-          <p class="capitalize">{{ user.gender or 'Not specified' }}</p>
-        </div>
+
+      <!-- Edit Profile -->
+      <div class="flex justify-center mt-10">
+        <a href="{{ url_for('edit_profile') }}" class="inline-block px-10 py-4 font-bold text-white transition bg-indigo-600 rounded-2xl hover:bg-indigo-700 dark:hover:bg-indigo-500">
+          Edit Profile
+        </a>
       </div>
     </div>
-    
-    <!-- Edit Profile button below details -->
-    <div class="flex justify-center mt-10">
-      <a href="{{ url_for('edit_profile') }}"
-         class="inline-block px-10 py-4 font-bold text-white transition bg-indigo-600 rounded-2xl hover:bg-indigo-700">
-        Edit Profile
-      </a>
-    </div>
-
-    
-  </div>
-</main>
-
-
-
+  </main>
 </div>
+
+<script>
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
+  const rootElement = document.documentElement;
+
+  // Load theme from localStorage or system preference
+  const storedTheme = localStorage.getItem('theme');
+  if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    rootElement.classList.add('dark');
+    themeIcon.classList.replace('fa-moon', 'fa-sun');
+  }
+
+  themeToggleBtn.addEventListener('click', () => {
+    if (rootElement.classList.contains('dark')) {
+      rootElement.classList.remove('dark');
+      themeIcon.classList.replace('fa-sun', 'fa-moon');
+      localStorage.setItem('theme', 'light');
+    } else {
+      rootElement.classList.add('dark');
+      themeIcon.classList.replace('fa-moon', 'fa-sun');
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+</script>
+
 
 </body>
 </html>

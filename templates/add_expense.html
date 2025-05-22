@@ -1,79 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Add Expense - Expense Management System</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script>
+    // Enable dark mode in class strategy for Tailwind
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
-<body class="text-gray-800 bg-gray-100">
+<body class="text-gray-800 transition-colors duration-500 bg-gray-100 dark:bg-gray-900 dark:text-gray-200">
 
 <div class="flex min-h-screen">
   <!-- Sidebar -->
-  <aside class="w-64 p-5 space-y-6 bg-white shadow-md">
+  <aside class="w-64 p-5 space-y-6 transition-colors duration-500 bg-white shadow-md dark:bg-gray-800 dark:shadow-lg">
     <div class="flex items-center justify-between">
-      <h2 class="text-xl font-bold text-indigo-600">
+      <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
         <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
       </h2>
+      <!-- Dark Mode Toggle -->
+      <button onclick="toggleDarkMode()" class="text-gray-500 hover:text-indigo-500 dark:text-blue-300 dark:hover:text-indigo-400" title="Toggle Dark Mode" id="darkModeToggleBtn">
+        <i id="darkModeIcon" class="fa-solid fa-moon"></i>
+      </button>
     </div>
     <nav class="space-y-3">
-      <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700">
         <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
       </a>
-      <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700">
         <i class="mr-2 fa-solid fa-user"></i>Profile
       </a>
-      <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded">
+      <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded dark:bg-indigo-700 dark:text-indigo-100">
         <i class="mr-2 fa-solid fa-plus"></i>Add Expense
       </a>
-      <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700">
         <i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History
       </a>
-      <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+      <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700">
         <i class="mr-2 fa-solid fa-circle-info"></i>About
       </a>
       {% if current_user.role == 'admin' %}
-      <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100">
+      <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700">
         <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
       </a>
       {% endif %}
-      <!-- New Feedback Link -->
-    <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-comments"></i>Feedback
-    </a>
-      <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200">
+      <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700">
+        <i class="mr-2 fa-solid fa-comments"></i>Feedback
+      </a>
+      <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">
         <i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout
       </a>
     </nav>
   </aside>
 
   <!-- Main Content -->
-  <main class="flex-1 p-10">
-    <div class="w-full max-w-4xl p-10 mx-auto bg-white rounded-lg shadow-lg">
-      <h1 class="mb-6 text-3xl font-bold text-indigo-700">Add New Expense</h1>
+  <main class="flex-1 p-10 bg-gradient-to-br from-indigo-100 to-white dark:from-gray-900 dark:to-gray-800">
+    <div class="w-full max-w-4xl p-10 mx-auto transition-colors duration-500 bg-white rounded-lg shadow-lg dark:bg-gray-800 dark:shadow-lg">
+      <h1 class="mb-6 text-3xl font-bold text-indigo-700 dark:text-indigo-400">Add New Expense</h1>
 
       <form method="POST" class="space-y-6">
         {{ form.hidden_tag() }}
 
         <div>
-          <label class="block mb-1 font-semibold">Amount</label>
-          {{ form.amount(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300") }}
+          <label class="block mb-1 font-semibold dark:text-gray-200">Amount</label>
+          {{ form.amount(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200") }}
         </div>
 
         <div>
-          <label class="block mb-1 font-semibold">Category</label>
-          {{ form.category(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300") }}
+          <label class="block mb-1 font-semibold dark:text-gray-200">Category</label>
+          {{ form.category(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200") }}
         </div>
 
         <div>
-          <label class="block mb-1 font-semibold">Description</label>
-          {{ form.description(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300") }}
+          <label class="block mb-1 font-semibold dark:text-gray-200">Description</label>
+          {{ form.description(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200") }}
         </div>
 
         <div>
-          <label class="block mb-1 font-semibold">Date</label>
-          {{ form.date(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300") }}
+          <label class="block mb-1 font-semibold dark:text-gray-200">Date</label>
+          {{ form.date(class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200") }}
         </div>
 
         <div class="text-center">
@@ -83,19 +92,34 @@
     </div>
 
     <!-- Info Section -->
-    <section class="w-full max-w-4xl p-6 mx-auto mt-10 rounded-lg shadow bg-indigo-50">
-      <h2 class="mb-3 text-2xl font-semibold text-indigo-700">Purpose of This Page</h2>
-      <p class="text-lg leading-relaxed text-gray-700">
+    <section class="w-full max-w-4xl p-6 mx-auto mt-10 transition-colors duration-500 rounded-lg shadow bg-indigo-50 dark:bg-indigo-900">
+      <h2 class="mb-3 text-2xl font-semibold text-indigo-700 dark:text-indigo-400">Purpose of This Page</h2>
+      <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
         This page allows you to record and categorize new expenses. Keeping track of your spending is essential for budgeting, saving, and identifying patterns. 
         By adding your expenses here, you ensure that your financial records remain accurate, helping you make smarter money decisions.
       </p>
     </section>
 
-    <footer class="mt-10 text-center text-gray-500">
+    <footer class="mt-10 text-center text-gray-500 transition-colors duration-500 dark:text-gray-400">
       <p>&copy; 2025 Expense Management System. All rights reserved.</p>
     </footer>
   </main>
 </div>
 
+<script>
+  function toggleDarkMode() {
+    const root = document.documentElement;
+    root.classList.toggle("dark");
+
+    const icon = document.getElementById("darkModeIcon");
+    if (root.classList.contains("dark")) {
+      icon.classList.remove("fa-moon");
+      icon.classList.add("fa-sun");
+    } else {
+      icon.classList.remove("fa-sun");
+      icon.classList.add("fa-moon");
+    }
+  }
+</script>
 </body>
 </html>
