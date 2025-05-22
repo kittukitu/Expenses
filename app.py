@@ -8,13 +8,15 @@ from flask_bcrypt import Bcrypt
 from flask_mail import Mail, Message
 import random
 from sqlalchemy import func
+import os
+import uuid
 import io
 import pandas as pd
 from datetime import datetime
 from sqlalchemy import extract
 from flask import send_file
 from calendar import monthrange
-
+from werkzeug.utils import secure_filename
 from reportlab.lib.pagesizes import letter
 
 from reportlab.pdfgen import canvas
@@ -47,6 +49,15 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+app.config['UPLOAD_FOLDER'] = 'static/profile_pics'
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024  # 2 MB max size
+app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 
 # ✅ User model
 class User(db.Model, UserMixin):
@@ -57,6 +68,7 @@ class User(db.Model, UserMixin):
     location = db.Column(db.String(50), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     password = db.Column(db.String(80), nullable=False)
+    profile_pic = db.Column(db.String(120),nullable=True)
     role = db.Column(db.String(10), nullable=False, default='user')
 
 class Feedback(db.Model):
@@ -194,20 +206,36 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
+        # Hash the password
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+
+        # Handle profile picture upload
+        file = request.files.get('profile_pic')
+        filename = 'default.jpg'  # your default image in static/profile_pics
+
+        if file and allowed_file(file.filename):
+            # Create a unique filename to prevent overwriting
+            ext = file.filename.rsplit('.', 1)[1].lower()
+            unique_name = f"{uuid.uuid4().hex}.{ext}"
+            upload_path = os.path.join(app.root_path, 'static/profile_pics', unique_name)
+            file.save(upload_path)
+            filename = unique_name
+
+        # Create the new user with profile_pic filename
         new_user = User(
             username=form.username.data,
             email=form.email.data,
             phone=form.phone.data,
             location=form.location.data,
             gender=form.gender.data,
-            password=hashed_password
+            password=hashed_password,
+            profile_pic=filename
         )
+
         db.session.add(new_user)
         db.session.commit()
 
@@ -215,7 +243,7 @@ def register():
         try:
             msg = Message(
                 "Welcome to Expense Manager!",
-                sender="youremail@gmail.com",  # Same as MAIL_USERNAME
+                sender=app.config['MAIL_USERNAME'],  # use your configured email
                 recipients=[new_user.email]
             )
             msg.body = f"""
@@ -234,8 +262,8 @@ Expense Management Team
 
         flash("Registration successful! Please login.", "success")
         return redirect(url_for('login'))
-    return render_template('register.html', form=form)
 
+    return render_template('register.html', form=form)
 
 
 @app.route('/forgot-password', methods=['GET', 'POST'])
@@ -298,10 +326,21 @@ def edit_profile():
         current_user.username = request.form['username']
         current_user.phone = request.form['phone']
         current_user.location = request.form['location']
+
+        # 📸 Handle profile picture upload
+        file = request.files.get('profile_pic')
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(filepath)
+            current_user.profile_pic = filename
+
         db.session.commit()
-        flash("Profile updated successfully!", "success")
+        flash('Profile updated!', 'success')
         return redirect(url_for('profile'))
+
     return render_template('edit_profile.html', user=current_user)
+
 
 #ADMIN PANEL
 @app.route('/admin')
