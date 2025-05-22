@@ -31,6 +31,8 @@
       document.documentElement.classList.toggle('dark');
     }
   </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
 </head>
 <body class="text-gray-800 transition-colors duration-300 bg-gray-100 dark:bg-gray-900 dark:text-gray-200">
 
@@ -41,9 +43,8 @@
       <h2 class="flex items-center text-xl font-bold text-indigo-600 dark:text-indigo-400">
         <i class="mr-1 fa-solid fa-wallet"></i>Expense Manager
       </h2>
-      <button id="toggleDarkMode" aria-label="Toggle Dark Mode" title="Toggle Dark Mode" class="text-gray-600 transition-colors dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400">
-  <i id="darkModeIcon" class="fa-solid fa-moon"></i>
-</button>
+      
+
     </div>
     <nav class="space-y-3">
       <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700 dark:text-indigo-300">
@@ -227,34 +228,6 @@
 
 </script>
 
-<script>
-  const toggleDarkModeBtn = document.getElementById('toggleDarkMode');
-  const darkModeIcon = document.getElementById('darkModeIcon');
-  const htmlElement = document.documentElement;
 
-  // Set initial mode and icon based on localStorage or system preference
-  if (
-    localStorage.getItem('theme') === 'dark' ||
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    htmlElement.classList.add('dark');
-    darkModeIcon.classList.replace('fa-moon', 'fa-sun');
-  } else {
-    htmlElement.classList.remove('dark');
-    darkModeIcon.classList.replace('fa-sun', 'fa-moon');
-  }
-
-  toggleDarkModeBtn.addEventListener('click', () => {
-    if (htmlElement.classList.contains('dark')) {
-      htmlElement.classList.remove('dark');
-      darkModeIcon.classList.replace('fa-sun', 'fa-moon');
-      localStorage.setItem('theme', 'light');
-    } else {
-      htmlElement.classList.add('dark');
-      darkModeIcon.classList.replace('fa-moon', 'fa-sun');
-      localStorage.setItem('theme', 'dark');
-    }
-  });
-</script>
 </body>
 </html>

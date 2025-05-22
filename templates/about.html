@@ -11,6 +11,8 @@
       darkMode: 'class',
     }
   </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     rel="stylesheet"
@@ -28,11 +30,7 @@
         <h2 class="flex items-center gap-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">
           <i class="fa-solid fa-wallet"></i> Expense Manager
         </h2>
-       <!-- Dark/Light mode toggle button -->
-      <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 focus:outline-none">
-        <i id="theme-icon" class="fa-solid fa-moon"></i>
-      </button>
-        
+      
       </div>
 
       <nav class="space-y-3">
@@ -274,30 +272,7 @@
     </main>
   </div>
 
- <script>
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  const themeIcon = document.getElementById('theme-icon');
-  const rootElement = document.documentElement;
-
-  // Load theme from localStorage or system preference
-  const storedTheme = localStorage.getItem('theme');
-  if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    rootElement.classList.add('dark');
-    themeIcon.classList.replace('fa-moon', 'fa-sun');
-  }
-
-  themeToggleBtn.addEventListener('click', () => {
-    if (rootElement.classList.contains('dark')) {
-      rootElement.classList.remove('dark');
-      themeIcon.classList.replace('fa-sun', 'fa-moon');
-      localStorage.setItem('theme', 'light');
-    } else {
-      rootElement.classList.add('dark');
-      themeIcon.classList.replace('fa-moon', 'fa-sun');
-      localStorage.setItem('theme', 'dark');
-    }
-  });
-</script>
+ 
 
 </body>
 </html>

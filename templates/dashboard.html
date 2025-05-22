@@ -10,6 +10,8 @@
       darkMode: 'class'
     };
   </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
@@ -41,10 +43,9 @@
         <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
           <i class="mr-2 fa-solid fa-wallet"></i>Expense Manage
         </h2>
-        <button onclick="toggleDarkMode()" class="text-gray-500 hover:text-indigo-500 dark:text-blue-300" title="Toggle Dark Mode" id="darkModeToggleBtn">
-  <i id="darkModeIcon" class="fa-solid fa-moon"></i>
-</button>
-
+        <button onclick="toggleDarkMode()">
+          <i id="darkModeIcon" class="text-black transition duration-300 fas fa-moon dark:text-white"></i>
+        </button>
       </div>
 
       <div class="space-y-3">
@@ -164,25 +165,7 @@
     </main>
   </div>
 
-  <!-- Dark Mode Script -->
-  <script>
-function toggleDarkMode() {
-  const root = document.documentElement;
-  root.classList.toggle("dark");
-
-  const icon = document.getElementById("darkModeIcon");
-  if (root.classList.contains("dark")) {
-    // Dark mode is on, show sun icon
-    icon.classList.remove("fa-moon");
-    icon.classList.add("fa-sun");
-  } else {
-    // Light mode, show moon icon
-    icon.classList.remove("fa-sun");
-    icon.classList.add("fa-moon");
-  }
-}
-
-  </script>
+  
 
   <!-- Chart.js Script -->
   <script>

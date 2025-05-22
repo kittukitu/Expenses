@@ -11,6 +11,8 @@
       darkMode: 'class',
     }
   </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body class="text-gray-800 transition-colors duration-500 bg-gray-100 dark:bg-gray-900 dark:text-gray-200">
@@ -22,10 +24,7 @@
       <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
         <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
       </h2>
-      <!-- Dark Mode Toggle -->
-      <button onclick="toggleDarkMode()" class="text-gray-500 hover:text-indigo-500 dark:text-blue-300 dark:hover:text-indigo-400" title="Toggle Dark Mode" id="darkModeToggleBtn">
-        <i id="darkModeIcon" class="fa-solid fa-moon"></i>
-      </button>
+      
     </div>
     <nav class="space-y-3">
       <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700">
@@ -106,20 +105,6 @@
   </main>
 </div>
 
-<script>
-  function toggleDarkMode() {
-    const root = document.documentElement;
-    root.classList.toggle("dark");
 
-    const icon = document.getElementById("darkModeIcon");
-    if (root.classList.contains("dark")) {
-      icon.classList.remove("fa-moon");
-      icon.classList.add("fa-sun");
-    } else {
-      icon.classList.remove("fa-sun");
-      icon.classList.add("fa-moon");
-    }
-  }
-</script>
 </body>
 </html>

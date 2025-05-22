@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Feedback - Expense Management System</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
   <script>
     // Enable dark mode class strategy
     tailwind.config = {
@@ -29,10 +30,7 @@
         <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
       </h2>
 
-      <!-- Dark/Light mode toggle button -->
-      <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 focus:outline-none">
-        <i id="theme-icon" class="fa-solid fa-moon"></i>
-      </button>
+      
     </div>
 
     <nav class="space-y-3">

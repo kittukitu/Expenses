@@ -11,6 +11,7 @@
       darkMode: 'class',
     }
   </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
     /* Smooth color transition */
@@ -34,11 +35,6 @@
       <h2 class="flex items-center text-xl font-bold text-indigo-600 dark:text-indigo-400">
         <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
       </h2>
-
-      <!-- Dark/Light mode toggle button -->
-      <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-200 focus:outline-none">
-        <i id="theme-icon" class="fa-solid fa-moon"></i>
-      </button>
     </div>
 
     <nav class="space-y-3">
@@ -62,7 +58,7 @@
         <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
       </a>
       {% endif %}
-      <a href="{{ url_for('feedback') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded dark:bg-indigo-700 dark:text-indigo-200">
+      <a href="{{ url_for('feedback') }}" class="block px-3 py-2 font-semibold text-indigo-700 rounded hover:bg-indigo-100 dark:bg-indigo-700 dark:text-indigo-200">
         <i class="mr-2 fa-solid fa-comments"></i>Feedback
       </a>
       <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700">
@@ -102,8 +98,9 @@
       </div>
 
       <div class="text-sm italic text-right text-gray-600 dark:text-gray-400">
-        Submitted on {{ feedback.date_submitted.strftime('%Y-%m-%d %H:%M') }}
-      </div>
+  Submitted on {{ feedback.date_submitted.strftime('%B %d, %Y') }}
+</div>
+
     </section>
 
     <!-- Response Form -->
@@ -136,30 +133,6 @@
 
 </div>
 
-<script>
-  const themeToggleBtn = document.getElementById('theme-toggle');
-  const themeIcon = document.getElementById('theme-icon');
-  const rootElement = document.documentElement;
-
-  // Load theme from localStorage or system preference
-  const storedTheme = localStorage.getItem('theme');
-  if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    rootElement.classList.add('dark');
-    themeIcon.classList.replace('fa-moon', 'fa-sun');
-  }
-
-  themeToggleBtn.addEventListener('click', () => {
-    if (rootElement.classList.contains('dark')) {
-      rootElement.classList.remove('dark');
-      themeIcon.classList.replace('fa-sun', 'fa-moon');
-      localStorage.setItem('theme', 'light');
-    } else {
-      rootElement.classList.add('dark');
-      themeIcon.classList.replace('fa-moon', 'fa-sun');
-      localStorage.setItem('theme', 'dark');
-    }
-  });
-</script>
 
 </body>
 </html>

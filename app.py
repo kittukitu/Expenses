@@ -75,10 +75,10 @@ class User(db.Model, UserMixin):
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    subject = db.Column(db.String(100), nullable=False)
-    message = db.Column(db.Text, nullable=False)
+    subject = db.Column(db.String(100))
+    message = db.Column(db.Text)
     date_submitted = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     # Add this relationship
     user = db.relationship('User', backref='feedbacks')

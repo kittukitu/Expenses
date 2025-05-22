@@ -12,6 +12,8 @@
       darkMode: 'class'
     }
   </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+
 </head>
 <body class="text-gray-800 transition-colors duration-300 bg-gray-100 dark:bg-gray-900 dark:text-gray-300">
 
@@ -43,10 +45,7 @@
       <h2 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">
         <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
       </h2>
-      <!-- Dark/Light Toggle Button -->
-      <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 focus:outline-none">
-        <i class="fa-solid fa-moon" id="theme-icon"></i>
-      </button>
+      
     </div>
     <nav class="space-y-3">
       <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100 dark:text-indigo-400 dark:hover:bg-indigo-700/30">
@@ -103,7 +102,10 @@
             <td class="px-4 py-3 text-gray-600 border border-gray-300 dark:text-gray-400 dark:border-gray-600 whitespace-nowrap">{{ fb.user.email }}</td>
             <td class="px-4 py-3 text-gray-600 border border-gray-300 dark:text-gray-400 dark:border-gray-600 whitespace-nowrap">{{ fb.subject }}</td>
             <td class="max-w-xl px-4 py-3 text-gray-600 break-words border border-gray-300 dark:text-gray-400 dark:border-gray-600">{{ fb.message }}</td>
-            <td class="px-4 py-3 text-sm text-gray-500 border border-gray-300 dark:text-gray-500 dark:border-gray-600 whitespace-nowrap">{{ fb.date_submitted.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td class="px-4 py-3 text-sm text-gray-500 border border-gray-300 dark:text-gray-500 dark:border-gray-600 whitespace-nowrap">
+  {{ fb.date_submitted.strftime('%B %d, %Y') }}
+</td>
+
             {% if current_user.is_authenticated and current_user.role == 'admin' %}
             <td class="px-4 py-3 border border-gray-300 dark:border-gray-600 whitespace-nowrap">
               <div class="flex space-x-2">
@@ -148,36 +150,6 @@
         }, 500);
       }, 5000);
     }
-
-    // Dark/Light mode toggle logic
-    const themeToggleBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
-
-    // Apply saved theme on load
-    if(localStorage.getItem('theme') === 'dark' || 
-      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.classList.add('dark');
-      themeIcon.classList.remove('fa-moon');
-      themeIcon.classList.add('fa-sun');
-    } else {
-      document.documentElement.classList.remove('dark');
-      themeIcon.classList.remove('fa-sun');
-      themeIcon.classList.add('fa-moon');
-    }
-
-    themeToggleBtn.addEventListener('click', () => {
-      if(document.documentElement.classList.contains('dark')) {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
-        themeIcon.classList.remove('fa-sun');
-        themeIcon.classList.add('fa-moon');
-      } else {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-      }
-    });
   });
 </script>
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="dark:bg-gray-900">
+<head>
+  <meta charset="UTF-8">
+  <title>Your App</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+</head>
+<body class="text-black bg-white dark:bg-gray-900 dark:text-white">
+  <!-- Page Content -->
+  {% block content %}{% endblock %}
+
+  <!-- Dark Mode Script (Place Here) -->
+  <script>
+  // Apply saved theme on load
+  if (localStorage.getItem('theme') === 'dark') {
+    document.documentElement.classList.add('dark');
+  }
+
+  function toggleDarkMode() {
+    const root = document.documentElement;
+    const icon = document.getElementById("darkModeIcon") || document.getElementById("theme-icon");
+
+    if (root.classList.contains("dark")) {
+      root.classList.remove("dark");
+      localStorage.setItem('theme', 'light');
+      if (icon) {
+        icon.classList.remove("fa-sun", "text-white");
+        icon.classList.add("fa-moon", "text-black");
+      }
+    } else {
+      root.classList.add("dark");
+      localStorage.setItem('theme', 'dark');
+      if (icon) {
+        icon.classList.remove("fa-moon", "text-black");
+        icon.classList.add("fa-sun", "text-white");
+      }
+    }
+  }
+
+  // Set the icon and color correctly on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    const icon = document.getElementById("darkModeIcon") || document.getElementById("theme-icon");
+
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+      if (icon) {
+        icon.classList.remove("fa-moon", "text-black");
+        icon.classList.add("fa-sun", "text-white");
+      }
+    } else {
+      document.documentElement.classList.remove('dark');
+      if (icon) {
+        icon.classList.remove("fa-sun", "text-white");
+        icon.classList.add("fa-moon", "text-black");
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
