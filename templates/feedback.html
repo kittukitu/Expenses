@@ -11,72 +11,98 @@
 
 <div class="flex min-h-screen">
   <!-- Sidebar -->
-  <!-- Sidebar -->
-<aside class="w-64 p-5 space-y-6 bg-white shadow-md">
-  <div class="flex items-center justify-between">
-    <h2 class="text-xl font-bold text-indigo-600">
-      <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
-    </h2>
-  </div>
-  <nav class="space-y-3">
-    <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
-    </a>
-    <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-user"></i>Profile
-    </a>
-    <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-plus"></i>Add Expense
-    </a>
-    <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History
-    </a>
-    <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-circle-info"></i>About
-    </a>
-    {% if current_user.is_authenticated and current_user.role == 'admin' %}
-    <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100">
-      <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
-    </a>
-    {% endif %}
-    <a href="{{ url_for('feedback') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded">
-      <i class="mr-2 fa-solid fa-comments"></i>Feedback
-    </a>
-    <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200">
-      <i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout
-    </a>
-  </nav>
-</aside>
-
+  <aside class="w-64 p-5 space-y-6 bg-white shadow-md">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold text-indigo-600">
+        <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
+      </h2>
+    </div>
+    <nav class="space-y-3">
+      <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
+      </a>
+      <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-user"></i>Profile
+      </a>
+      <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-plus"></i>Add Expense
+      </a>
+      <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History
+      </a>
+      <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-circle-info"></i>About
+      </a>
+      {% if current_user.is_authenticated and current_user.role == 'admin' %}
+      <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100">
+        <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
+      </a>
+      {% endif %}
+      <a href="{{ url_for('feedback') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded">
+        <i class="mr-2 fa-solid fa-comments"></i>Feedback
+      </a>
+      <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200">
+        <i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout
+      </a>
+    </nav>
+  </aside>
 
   <!-- Main Content -->
   <main class="flex-1 p-10">
-    <div class="w-full max-w-lg p-8 mx-auto bg-white rounded-lg shadow-lg">
-      <h1 class="mb-6 text-3xl font-bold text-indigo-700">Send Feedback to Admin</h1>
-      <form method="POST" class="space-y-6">
-        {{ form.hidden_tag() }}
+    <h1 class="mb-8 text-4xl font-bold text-center text-indigo-700">Send Feedback to Admin</h1>
 
-        <div>
-          {{ form.subject.label(class="block mb-1 font-semibold text-gray-700") }}
-          {{ form.subject(class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500") }}
-          {% for error in form.subject.errors %}
-            <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-          {% endfor %}
-        </div>
+    <!-- Image and Feedback Form Container -->
+    <div class="flex flex-col items-center max-w-5xl mx-auto md:flex-row md:space-x-10 md:items-stretch">
 
-        <div>
-          {{ form.message.label(class="block mb-1 font-semibold text-gray-700") }}
-          {{ form.message(class="w-full h-32 px-4 py-2 border border-gray-300 rounded resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500") }}
-          {% for error in form.message.errors %}
-            <p class="mt-1 text-sm text-red-600">{{ error }}</p>
-          {% endfor %}
-        </div>
+      <!-- Image -->
+      <div class="w-full overflow-hidden bg-white rounded-lg shadow-lg md:w-1/2">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgtRTlU3N2p3nRKJATexIhayEE2Bd9prx1Ww&s"
+          alt="Feedback"
+          class="object-cover w-full h-full"
+          loading="lazy"
+          style="min-height: 400px"
+        />
+      </div>
 
-        <div>
-          {{ form.submit(class="px-6 py-2 font-semibold text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500") }}
-        </div>
-      </form>
+      <!-- Feedback form -->
+      <div class="flex flex-col justify-center w-full p-8 bg-white rounded-lg shadow-lg md:w-1/2">
+        <form method="POST" class="space-y-6">
+          {{ form.hidden_tag() }}
+
+          <div>
+            {{ form.subject.label(class="block mb-1 font-semibold text-gray-700") }}
+            {{ form.subject(class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500") }}
+            {% for error in form.subject.errors %}
+              <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+            {% endfor %}
+          </div>
+
+          <div>
+            {{ form.message.label(class="block mb-1 font-semibold text-gray-700") }}
+            {{ form.message(class="w-full h-32 px-4 py-2 border border-gray-300 rounded resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500") }}
+            {% for error in form.message.errors %}
+              <p class="mt-1 text-sm text-red-600">{{ error }}</p>
+            {% endfor %}
+          </div>
+
+          <div>
+            {{ form.submit(class="w-full px-6 py-3 font-semibold text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500") }}
+          </div>
+        </form>
+      </div>
     </div>
+
+    <!-- Separate Content Section -->
+    <section class="max-w-5xl p-6 mx-auto mt-12 bg-white rounded-lg shadow-lg">
+      <h2 class="mb-4 text-3xl font-semibold text-center text-indigo-700">We value your feedback!</h2>
+      <p class="max-w-3xl mx-auto leading-relaxed text-center text-gray-700">
+        Your input helps us improve the Expense Management System continuously.
+        Please share your thoughts, suggestions, or report any issues.
+        Our team reviews all feedback carefully to provide you with the best experience.
+      </p>
+    </section>
+
   </main>
 </div>
 

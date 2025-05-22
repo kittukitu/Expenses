@@ -5,80 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>About - Expense Management System</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
 </head>
 <body class="text-gray-800 bg-gray-100">
 
 <div class="flex min-h-screen">
   <!-- Sidebar -->
-  <!-- Sidebar -->
-<aside class="w-64 p-5 space-y-6 bg-white shadow-md">
-  <div class="flex items-center justify-between">
-    <h2 class="text-xl font-bold text-indigo-600">
-      <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
-    </h2>
-  </div>
-  <nav class="space-y-3">
-    <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
-    </a>
-    <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-user"></i>Profile
-    </a>
-    <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-plus"></i>Add Expense
-    </a>
-    <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History
-    </a>
+  <aside class="w-64 p-5 space-y-6 bg-white shadow-md">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold text-indigo-600">
+        <i class="mr-2 fa-solid fa-wallet"></i> Expense Manager
+      </h2>
+    </div>
+    <nav class="space-y-3">
+      <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
+      </a>
+      <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-user"></i>Profile
+      </a>
+      <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-plus"></i>Add Expense
+      </a>
+      <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History
+      </a>
 
-    <a href="{{ url_for('about') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded">
-      <i class="mr-2 fa-solid fa-circle-info"></i>About
-    </a>
-    {% if user.role == 'admin' %}
-    <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100">
-      <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
-    </a>
-    {% endif %}
+      <a href="{{ url_for('about') }}" class="block px-3 py-2 font-semibold text-indigo-700 bg-indigo-100 rounded">
+        <i class="mr-2 fa-solid fa-circle-info"></i>About
+      </a>
+      {% if user.role == 'admin' %}
+      <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 rounded hover:bg-red-100">
+        <i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel
+      </a>
+      {% endif %}
 
-    <!-- New Feedback Link -->
-    <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
-      <i class="mr-2 fa-solid fa-comments"></i>Feedback
-    </a>
+      <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 rounded hover:bg-indigo-100">
+        <i class="mr-2 fa-solid fa-comments"></i>Feedback
+      </a>
 
-    
-    <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200">
-      <i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout
-    </a>
-  </nav>
-</aside>
-
+      <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 rounded hover:bg-gray-200">
+        <i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout
+      </a>
+    </nav>
+  </aside>
 
   <!-- Main Content -->
-  <main class="flex-1 p-10">
-    <div class="w-full max-w-6xl p-10 mx-auto bg-white rounded-lg shadow-lg">
-      <h1 class="mb-6 text-3xl font-bold text-indigo-700">About Expense Management System</h1>
+  <main class="flex-1 p-10 overflow-y-auto">
+    <div class="w-full max-w-6xl p-10 mx-auto space-y-16 bg-white rounded-lg shadow-lg">
+      <h1 class="flex items-center gap-3 text-4xl font-bold text-indigo-700">
+        <i class="fa-solid fa-info-circle"></i> 
+        About Expense Management System
+      </h1>
 
-      <section class="mb-8">
-        <h2 class="mb-2 text-2xl font-semibold">What is Expense Management?</h2>
-        <p class="text-lg leading-relaxed text-gray-700">
-          Expense management refers to the process of tracking, analyzing, and controlling the spending habits of an individual or organization. 
-          It involves recording all expenses to understand where money is being spent and finding ways to optimize spending to meet financial goals.
-        </p>
+      <section class="flex flex-col md:flex-row md:items-center md:gap-10">
+  <div class="md:w-1/2">
+    <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+      <i class="fa-solid fa-file-invoice-dollar"></i> What is Expense Management?
+    </h2>
+    <p class="text-lg leading-relaxed text-gray-700">
+      Expense management refers to the process of tracking, analyzing, and controlling the spending habits of an individual or organization. 
+      It involves recording all expenses to understand where money is being spent and finding ways to optimize spending to meet financial goals.
+    </p>
+  </div>
+  <div class="mt-6 md:w-1/2 md:mt-0">
+    <img 
+      src="https://blog.darwinbox.com/hubfs/Travel%20and%20Expense%20Management%20Definition%2C%20Significance%20%26%20Key%20Features.jpg" 
+      alt="Expense management illustration" 
+      class="w-full max-w-md mx-auto rounded-lg shadow-lg" 
+    />
+  </div>
+</section>
+
+
+      <section class="flex flex-col md:flex-row md:items-center md:gap-10">
+        <div class="order-2 mt-6 md:w-1/2 md:order-1 md:mt-0">
+          <img 
+            src="https://happay.com/blog/wp-content/uploads/sites/12/2022/08/what-is-expense-management.png" 
+            alt="Financial growth illustration" 
+            class="w-full max-w-md mx-auto rounded-lg shadow-lg" 
+            onerror="this.onerror=null; this.src='https://source.unsplash.com/600x400/?growth,finance';"
+          />
+        </div>
+        <div class="order-1 md:w-1/2 md:order-2">
+          <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+            <i class="fa-solid fa-chart-line"></i> Why is Expense Management Important?
+          </h2>
+          <p class="text-lg leading-relaxed text-gray-700">
+            Proper expense management helps prevent overspending, improves budgeting accuracy, and ensures financial stability.
+            By regularly reviewing expenses, users can identify unnecessary costs, allocate funds effectively, and save money.
+            For businesses, it also ensures compliance with financial policies and aids in financial reporting.
+          </p>
+        </div>
       </section>
 
-      <section class="mb-8">
-        <h2 class="mb-2 text-2xl font-semibold">Why is Expense Management Important?</h2>
-        <p class="text-lg leading-relaxed text-gray-700">
-          Proper expense management helps prevent overspending, improves budgeting accuracy, and ensures financial stability.
-          By regularly reviewing expenses, users can identify unnecessary costs, allocate funds effectively, and save money.
-          For businesses, it also ensures compliance with financial policies and aids in financial reporting.
-        </p>
-      </section>
-
-      <section class="mb-8">
-        <h2 class="mb-2 text-2xl font-semibold">Purpose of This Expense Management System</h2>
-        <p class="text-lg leading-relaxed text-gray-700">
+      <section>
+        <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-bullseye"></i> Purpose of This Expense Management System
+        </h2>
+        <p class="max-w-6xl text-lg leading-relaxed text-gray-700">
           This Expense Management System is designed to simplify the way users manage their personal or organizational finances.
           It allows users to easily add and categorize expenses, view detailed history, track budgets, and analyze spending patterns.
           The system promotes better financial decisions by providing insightful analytics and reports.
@@ -86,19 +111,126 @@
         </p>
       </section>
 
+      <section class="flex flex-col md:flex-row md:items-center md:gap-10">
+        <div class="md:w-1/2">
+          <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+            <i class="fa-solid fa-gear"></i> How It Works
+          </h2>
+          <p class="text-lg leading-relaxed text-gray-700">
+            Our system provides a user-friendly interface to enter daily expenses, categorize them, and set budgets for each category.
+            Expenses can be added quickly via a form, while historical data is displayed in intuitive tables and charts.
+            Budget alerts notify users when they approach or exceed their limits, encouraging mindful spending.
+            Detailed reports and analytics help users visualize trends and make informed decisions.
+          </p>
+        </div>
+        <div class="mt-6 md:w-1/2 md:mt-0">
+          <img 
+            src="https://dokka.com/wp-content/uploads/2023/10/Expense-management-2.jpg" 
+            alt="How it works illustration" 
+            class="w-full max-w-md mx-auto rounded-lg shadow-lg" 
+            onerror="this.onerror=null; this.src='https://source.unsplash.com/600x400/?teamwork,work';"
+          />
+        </div>
+      </section>
+
       <section>
-        <h2 class="mb-2 text-2xl font-semibold">Key Features</h2>
-        <ul class="space-y-2 text-lg text-gray-700 list-disc list-inside">
-          <li>Add, edit, and delete expenses quickly and easily.</li>
-          <li>Categorize expenses for better organization and insights.</li>
-          <li>Track budgets and get alerts when approaching limits.</li>
-          <li>View detailed reports and analytics on spending trends.</li>
-          <li>Secure user authentication with role-based access.</li>
+        <h2 class="flex items-center gap-2 mb-4 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-hand-holding-dollar"></i> Benefits for Individuals and Businesses
+        </h2>
+        <ul class="grid grid-cols-1 gap-8 text-lg text-gray-700 md:grid-cols-3">
+          <li class="p-6 transition rounded shadow bg-indigo-50 hover:shadow-lg">
+            <i class="mb-3 text-indigo-500 fa-solid fa-user fa-xl"></i>
+            <strong>Individuals:</strong> Gain control over personal finances, reduce debt, save for future goals, and eliminate financial stress.
+          </li>
+          <li class="p-6 transition rounded shadow bg-indigo-50 hover:shadow-lg">
+            <i class="mb-3 text-indigo-500 fa-solid fa-briefcase fa-xl"></i>
+            <strong>Small Businesses:</strong> Monitor operational costs, ensure budget compliance, simplify tax preparation, and improve profitability.
+          </li>
+          <li class="p-6 transition rounded shadow bg-indigo-50 hover:shadow-lg">
+            <i class="mb-3 text-indigo-500 fa-solid fa-building fa-xl"></i>
+            <strong>Large Organizations:</strong> Enforce financial policies, maintain transparency, generate comprehensive reports, and support audits.
+          </li>
         </ul>
       </section>
-    </div>
 
-    <footer class="mt-10 text-center text-gray-500">
+      <section>
+        <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-shield-halved"></i> Security & Privacy
+        </h2>
+        <p class="max-w-4xl text-lg leading-relaxed text-gray-700">
+          We take security and privacy seriously. Our application uses industry-standard encryption protocols to safeguard your data.
+          Role-based access control ensures that only authorized users can access sensitive information.
+          Regular backups and secure hosting protect your data from loss or unauthorized access.
+          Additionally, personal information is never shared with third parties without explicit consent.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-code"></i> Technology Stack
+        </h2>
+        <p class="max-w-4xl text-lg leading-relaxed text-gray-700">
+          This system is built using modern, robust technologies to ensure high performance and scalability:
+        </p>
+        <ul class="max-w-4xl space-y-2 text-lg text-gray-700 list-disc list-inside">
+          <li><i class="mr-2 text-indigo-600 fa-brands fa-css3-alt"></i><strong>Frontend:</strong> Tailwind CSS, HTML5, JavaScript, and FontAwesome for UI and icons.</li>
+          <li><i class="mr-2 text-indigo-600 fa-brands fa-python"></i><strong>Backend:</strong> Python Flask / Node.js (adjust as per your actual stack) for server-side logic and APIs.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-database"></i><strong>Database:</strong> MySQL for reliable and efficient data storage.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-lock"></i><strong>Authentication:</strong> Secure login with role-based access control.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-cloud"></i><strong>Hosting:</strong> Cloud-based deployment for uptime and reliability.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-road"></i> Future Plans / Roadmap
+        </h2>
+        <p class="max-w-4xl text-lg leading-relaxed text-gray-700">
+          We are committed to continuously improving this system with features such as:
+        </p>
+        <ul class="max-w-4xl space-y-2 text-lg text-gray-700 list-disc list-inside">
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-mobile-screen-button"></i> Mobile app version for on-the-go expense tracking.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-robot"></i> Advanced AI-based spending predictions and financial advice.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-money-bill-wave"></i> Multi-currency support for international users.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-puzzle-piece"></i> Integration with banking APIs for automatic transaction import.</li>
+          <li><i class="mr-2 text-indigo-600 fa-solid fa-users"></i> Collaborative budgeting for teams and families.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="flex items-center gap-2 mb-4 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-comments"></i> User Testimonials
+        </h2>
+        <div class="max-w-4xl mx-auto space-y-6">
+          <blockquote class="p-4 italic border-l-4 border-indigo-500 rounded shadow bg-indigo-50">
+            <p>"This expense manager helped me finally understand my spending habits and save more every month!"</p>
+            <footer class="mt-2 text-sm font-semibold text-indigo-700">— Sarah J., Freelancer</footer>
+          </blockquote>
+
+          <blockquote class="p-4 italic border-l-4 border-indigo-500 rounded shadow bg-indigo-50">
+            <p>"Our small business finances have never been clearer. The reports make tax time so much easier."</p>
+            <footer class="mt-2 text-sm font-semibold text-indigo-700">— Michael B., Business Owner</footer>
+          </blockquote>
+
+          <blockquote class="p-4 italic border-l-4 border-indigo-500 rounded shadow bg-indigo-50">
+            <p>"User-friendly, secure, and feature-packed. A great tool for managing expenses across our team."</p>
+            <footer class="mt-2 text-sm font-semibold text-indigo-700">— Karen L., Finance Manager</footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="flex items-center gap-2 mb-2 text-2xl font-semibold text-indigo-600">
+          <i class="fa-solid fa-headset"></i> Contact & Support
+        </h2>
+        <p class="max-w-4xl text-lg leading-relaxed text-gray-700">
+          For questions, feedback, or support, feel free to reach out via our <a href="{{ url_for('feedback') }}" class="text-indigo-600 underline hover:text-indigo-800">Feedback</a> page.
+          We are dedicated to helping you make the most of your financial management journey.
+        </p>
+      </section>
+
+    </div>
+     <footer class="mt-10 text-center text-gray-500">
       <p>&copy; 2025 Expense Management System. All rights reserved.</p>
     </footer>
   </main>
@@ -106,3 +238,4 @@
 
 </body>
 </html>
+
