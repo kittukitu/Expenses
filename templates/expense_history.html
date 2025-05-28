@@ -111,6 +111,20 @@
         </div>
       </form>
 
+      <!-- Upload & Download Template Section -->
+<div class="flex flex-wrap items-center justify-between gap-4 mt-8">
+  <form action="{{ url_for('upload_expenses_excel') }}" method="POST" enctype="multipart/form-data" class="flex items-center gap-4">
+    <input type="file" name="excel_file" accept=".xlsx,.xls" required class="px-3 py-2 text-sm border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
+    <button type="submit" class="px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+      Upload Excel
+    </button>
+  </form>
+  <a href="{{ url_for('download_excel_template') }}" class="p-2 text-white bg-yellow-600 rounded hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500">
+    Download Sample Excel Format
+  </a>
+</div>
+
+
       <!-- Expense Table -->
       <div class="mt-8 overflow-x-auto border border-gray-300 rounded-md dark:border-gray-700">
         <table class="w-full text-left border-collapse rounded-md">
@@ -172,12 +186,13 @@
 
     </div>
 
-    <footer class="mt-10 text-center text-gray-500 dark:text-gray-400">
-      <p>&copy; 2025 Expense Management System. All rights reserved.</p>
-    </footer>
+    
   </main>
 </div>
-
+<!-- Footer -->
+    <footer class="p-4 text-center text-white bg-blue-900 bg-opacity-30 backdrop-blur-md">
+        &copy; 2025 Voilacode Technologies. Built with ❤️ using Flask & Tailwind CSS.
+    </footer>
 <script>
   const pieCtx = document.getElementById('expensePieChart');
   const barCtx = document.getElementById('expenseBarChart');
@@ -231,6 +246,10 @@
 
 </script>
 
-
+<!-- Chat Icon Button -->
+<a href="{{ url_for('chat_ai') }}" 
+   class="fixed z-40 flex items-center justify-center w-24 h-24 text-white transition-transform duration-200 bg-indigo-600 rounded-full shadow-lg bottom-6 right-6 hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-400 hover:scale-110">
+  <i class="text-5xl fa-solid fa-comment-dots"></i>
+</a>
 </body>
 </html>

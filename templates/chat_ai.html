@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chat AI - Expense Management System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body class="text-gray-800 transition-colors duration-300 bg-gray-100 dark:bg-gray-900 dark:text-gray-300">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-64 p-5 space-y-6 bg-white shadow-md dark:bg-gray-800">
+      <div class="flex items-center justify-between">
+        <h2 class="flex items-center gap-2 text-xl font-bold text-indigo-600 dark:text-indigo-400">
+          <i class="fa-solid fa-wallet"></i> Expense Manager
+        </h2>
+      </div>
+      <nav class="space-y-3">
+        <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 text-indigo-700 transition rounded dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900"><i class="mr-2 fa-solid fa-chart-line"></i>Dashboard</a>
+        <a href="{{ url_for('profile') }}" class="block px-3 py-2 text-indigo-700 transition rounded dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900"><i class="mr-2 fa-solid fa-user"></i>Profile</a>
+        <a href="{{ url_for('add_expense') }}" class="block px-3 py-2 text-indigo-700 transition rounded dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900"><i class="mr-2 fa-solid fa-plus"></i>Add Expense</a>
+        <a href="{{ url_for('expense_history') }}" class="block px-3 py-2 text-indigo-700 transition rounded dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900"><i class="mr-2 fa-solid fa-clock-rotate-left"></i>Expense History</a>
+        <a href="{{ url_for('about') }}" class="block px-3 py-2 text-indigo-700 transition rounded dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900"><i class="mr-2 fa-solid fa-circle-info"></i>About</a>
+        {% if user.role == 'admin' %}
+        <a href="{{ url_for('admin_panel') }}" class="block px-3 py-2 text-red-700 transition rounded dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900"><i class="mr-2 fa-solid fa-user-shield"></i>Admin Panel</a>
+        {% endif %}
+        <a href="{{ url_for('feedback') }}" class="block px-3 py-2 text-indigo-700 transition rounded dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900"><i class="mr-2 fa-solid fa-comments"></i>Feedback</a>
+        <a href="{{ url_for('logout') }}" class="block px-3 py-2 text-gray-700 transition rounded dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"><i class="mr-2 fa-solid fa-right-from-bracket"></i>Logout</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10 bg-gradient-to-br from-indigo-100 to-white dark:from-gray-900 dark:to-gray-800">
+      <div class="w-full max-w-4xl mx-auto space-y-10">
+        <h1 class="flex items-center gap-3 text-3xl font-bold text-indigo-700 dark:text-indigo-400">
+          <i class="fa-solid fa-robot"></i> Ask the AI Assistant
+        </h1>
+
+        <!-- Help Section -->
+        <div class="p-6 text-base border-l-4 border-yellow-400 rounded-lg bg-yellow-50 dark:bg-yellow-900 dark:border-yellow-600 dark:text-yellow-100">
+          <h2 class="mb-2 text-lg font-semibold text-yellow-700 dark:text-yellow-300">
+            <i class="mr-1 fa-solid fa-lightbulb"></i> How to Ask
+          </h2>
+          <ul class="space-y-1 list-disc list-inside">
+            <li>📊 <strong>Summary:</strong> "summary for March 2022", "summary for last year", "summary for 2 years ago"</li>
+            <li>📅 <strong>Recent months:</strong> "summary for last month", "summary for April"</li>
+            <li>💡 <strong>Savings tips:</strong> "how to save money?", "tips to reduce expenses"</li>
+            <li>🤖 <strong>Help:</strong> "what can I ask?", "how does this work?"</li>
+          </ul>
+        </div>
+
+        <!-- Chat Form -->
+        <form method="POST" class="space-y-4">
+          <textarea
+            name="message"
+            placeholder="Ask me about your monthly summary or savings tips..."
+            required
+            class="w-full p-4 text-lg bg-white border rounded-lg resize-none dark:bg-gray-800 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            rows="5"
+          ></textarea>
+          <button
+            type="submit"
+            class="px-6 py-3 font-semibold text-white transition duration-300 bg-indigo-600 rounded-lg hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+          >
+            <i class="mr-2 fa-solid fa-paper-plane"></i> Send
+          </button>
+        </form>
+
+        <!-- AI Response -->
+        {% if response %}
+        <div class="p-6 mt-6 space-y-4 text-lg rounded-lg bg-indigo-50 dark:bg-indigo-900">
+          <strong class="block mb-2 text-indigo-700 dark:text-indigo-300"><i class="fa-solid fa-brain"></i> AI Response:</strong>
+          <ul class="space-y-2 list-disc list-inside">
+            {% for point in response.split('\n') if point.strip() %}
+              <li>{{ point.strip() }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer class="p-4 text-center text-white bg-blue-900 bg-opacity-30 backdrop-blur-md">
+    &copy; 2025 Voilacode Technologies. Built with ❤️ using Flask & Tailwind CSS.
+  </footer>
+</body>
+</html>

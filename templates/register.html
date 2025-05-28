@@ -19,81 +19,7 @@
         .animate-float3 { animation: float3 9s ease-in-out infinite; }
         .animate-float4 { animation: float4 11s ease-in-out infinite; }
         .animate-float5 { animation: float5 12s ease-in-out infinite; }
-    </style>
 
-</head>
-
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-tr from-purple-600 to-rose-400">
-    <!-- Animated Floating Icons Background -->
-    <div class="absolute inset-0 pointer-events-none -z-10">
-        <!-- Larger, clearer, slightly opaque icons -->
-        <div class="absolute text-6xl opacity-30 animate-float1 left-10 top-20">👗</div>
-        <div class="absolute text-6xl opacity-30 animate-float2 right-16 top-40">✈️</div>
-        <div class="absolute text-6xl opacity-30 animate-float3 left-20 bottom-28">💄</div>
-        <div class="absolute text-6xl opacity-30 animate-float4 right-24 bottom-20">🍕</div>
-        <div class="absolute text-6xl opacity-30 animate-float5 left-1/2 top-1/2">🏀</div>
-        <div class="absolute text-6xl opacity-30 animate-float3 left-1/4 top-1/3">🎮</div>
-        <div class="absolute text-6xl opacity-30 animate-float4 right-1/3 top-10">🛍️</div>
-        
-    </div>
-    <div class="w-full max-w-xl p-8 bg-white shadow-2xl bg-opacity-95 rounded-xl animate-fade-in-up">
-        <h1 class="mb-2 text-3xl font-bold text-center text-purple-800">Register</h1>
-        <p class="mb-6 text-sm text-center text-gray-600">Explore the Expense Management Application</p>
-        
-        <form method="POST" enctype="multipart/form-data" class="space-y-4">
-         {{ form.hidden_tag() }}
-            {{ form.username(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Username") }}
-            {{ form.email(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Email") }}
-            {{ form.phone(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Phone") }}
-            {{ form.location(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Location") }}
-            {{ form.gender(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500") }}
-          
-
-            <div class="relative">
-                {{ form.password(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Password", id="reg_password") }}
-                <button type="button" onclick="toggleRegPassword()" class="absolute text-gray-500 right-3 top-3">
-                    👁️
-                </button>
-            </div>
-<div class="flex items-center space-x-4">
-
-   
-  <!-- Image preview circle -->
-  <div id="profilePreview" class="flex items-center justify-center w-32 h-32 overflow-hidden bg-gray-100 border-2 border-purple-500 rounded-full">
-    <span class="text-gray-400 select-none">Profile Pic</span>
-  </div>
-  <!-- Custom file input -->
-  <div class="relative">
-    <input type="file" name="profile_pic" accept="image/*" id="profile_pic_input" class="hidden" onchange="previewProfilePic(event)"/>
-    <label for="profile_pic_input" class="inline-block px-4 py-2 text-white transition bg-purple-600 rounded-lg cursor-pointer select-none hover:bg-purple-700">
-      Choose Image
-    </label>
-  </div>
-
-  <!-- Clear button -->
-  <button type="button" onclick="clearProfilePic()" class="font-semibold text-purple-600 hover:text-purple-800 focus:outline-none" title="Remove selected image">
-    ✕ Clear
-  </button>
-</div>
-
-
-            
-            {{ form.submit(class_="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition") }}
-        </form>
-
-        <div class="mt-4 text-sm text-center text-gray-700">
-            <a href="{{ url_for('login') }}" class="text-purple-600 hover:underline">Already have an account? Log In</a>
-        </div>
-    </div>
-
-    <script>
-        function toggleRegPassword() {
-            const password = document.getElementById("reg_password");
-            password.type = password.type === "password" ? "text" : "password";
-        }
-    </script>
-
-    <style>
         @keyframes fade-in-up {
             0% {
                 opacity: 0;
@@ -109,32 +35,95 @@
             animation: fade-in-up 0.8s ease-out;
         }
     </style>
+</head>
+
+<body class="flex flex-col min-h-screen bg-gradient-to-tr from-purple-600 to-rose-400">
+    <!-- Animated Floating Icons Background -->
+    <div class="absolute inset-0 pointer-events-none -z-10">
+        <div class="absolute text-6xl opacity-30 animate-float1 left-10 top-20">👗</div>
+        <div class="absolute text-6xl opacity-30 animate-float2 right-16 top-40">✈️</div>
+        <div class="absolute text-6xl opacity-30 animate-float3 left-20 bottom-28">💄</div>
+        <div class="absolute text-6xl opacity-30 animate-float4 right-24 bottom-20">🍕</div>
+        <div class="absolute text-6xl opacity-30 animate-float5 left-1/2 top-1/2">🏀</div>
+        <div class="absolute text-6xl opacity-30 animate-float3 left-1/4 top-1/3">🎮</div>
+        <div class="absolute text-6xl opacity-30 animate-float4 right-1/3 top-10">🛍️</div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex items-center justify-center flex-grow">
+        <div class="w-full max-w-xl p-8 bg-white shadow-2xl bg-opacity-95 rounded-xl animate-fade-in-up">
+            <h1 class="mb-2 text-3xl font-bold text-center text-purple-800">Register</h1>
+            <p class="mb-6 text-sm text-center text-gray-600">Explore the Expense Management Application</p>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                {{ form.hidden_tag() }}
+                {{ form.username(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Username") }}
+                {{ form.email(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Email") }}
+                {{ form.phone(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Phone") }}
+                {{ form.location(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Location") }}
+                {{ form.gender(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500") }}
+
+                <div class="relative">
+                    {{ form.password(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500", placeholder="Password", id="reg_password") }}
+                    <button type="button" onclick="toggleRegPassword()" class="absolute text-gray-500 right-3 top-3">
+                        👁️
+                    </button>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div id="profilePreview" class="flex items-center justify-center w-32 h-32 overflow-hidden bg-gray-100 border-2 border-purple-500 rounded-full">
+                        <span class="text-gray-400 select-none">Profile Pic</span>
+                    </div>
+                    <div class="relative">
+                        <input type="file" name="profile_pic" accept="image/*" id="profile_pic_input" class="hidden" onchange="previewProfilePic(event)" />
+                        <label for="profile_pic_input" class="inline-block px-4 py-2 text-white transition bg-purple-600 rounded-lg cursor-pointer select-none hover:bg-purple-700">
+                            Choose Image
+                        </label>
+                    </div>
+                    <button type="button" onclick="clearProfilePic()" class="font-semibold text-purple-600 hover:text-purple-800 focus:outline-none" title="Remove selected image">
+                        ✕ Clear
+                    </button>
+                </div>
+
+                {{ form.submit(class_="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition") }}
+            </form>
+
+            <div class="mt-4 text-sm text-center text-gray-700">
+                <a href="{{ url_for('login') }}" class="text-purple-600 hover:underline">Already have an account? Log In</a>
+            </div>
+        </div>
+    </main>
+
+    
+
+    <!-- Scripts -->
     <script>
+        function toggleRegPassword() {
+            const password = document.getElementById("reg_password");
+            password.type = password.type === "password" ? "text" : "password";
+        }
+
         function previewProfilePic(event) {
-  const input = event.target;
-  const preview = document.getElementById('profilePreview');
+            const input = event.target;
+            const preview = document.getElementById('profilePreview');
 
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" alt="Profile Picture" class="object-cover w-full h-full" />`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.innerHTML = '<span class="text-gray-400 select-none">No Image</span>';
+            }
+        }
 
-    reader.onload = function(e) {
-      preview.innerHTML = `<img src="${e.target.result}" alt="Profile Picture" class="object-cover w-full h-full" />`;
-    }
-
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    preview.innerHTML = '<span class="text-gray-400 select-none">No Image</span>';
-  }
-}
-
-function clearProfilePic() {
-  const input = document.getElementById('profile_pic_input');
-  const preview = document.getElementById('profilePreview');
-  
-  input.value = '';
-  preview.innerHTML = '<span class="text-gray-400 select-none">No Image</span>';
-}
-
+        function clearProfilePic() {
+            const input = document.getElementById('profile_pic_input');
+            const preview = document.getElementById('profilePreview');
+            input.value = '';
+            preview.innerHTML = '<span class="text-gray-400 select-none">No Image</span>';
+        }
     </script>
 </body>
 </html>

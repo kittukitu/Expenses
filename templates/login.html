@@ -8,84 +8,33 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Floating keyframe animations */
-        @keyframes float1 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-30px) rotate(5deg); } }
-        @keyframes float2 { 0%, 100% { transform: translateX(0) rotate(0deg); } 50% { transform: translateX(30px) rotate(-5deg); } }
-        @keyframes float3 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(25px); } }
-        @keyframes float4 { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-25px); } }
-        @keyframes float5 { 0%, 100% { transform: translate(0); } 50% { transform: translate(-20px, 20px); } }
+        @keyframes float1 {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            50% { transform: translateX(30px) rotate(-5deg); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(25px); }
+        }
+        @keyframes float4 {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-25px); }
+        }
+        @keyframes float5 {
+            0%, 100% { transform: translate(0); }
+            50% { transform: translate(-20px, 20px); }
+        }
 
         .animate-float1 { animation: float1 8s ease-in-out infinite; }
         .animate-float2 { animation: float2 10s ease-in-out infinite; }
         .animate-float3 { animation: float3 9s ease-in-out infinite; }
         .animate-float4 { animation: float4 11s ease-in-out infinite; }
         .animate-float5 { animation: float5 12s ease-in-out infinite; }
-    </style>
 
-</head>
-
-<body class="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-800 to-pink-400">
-    <!-- Animated Floating Icons Background -->
-    <div class="absolute inset-0 pointer-events-none -z-10">
-        <!-- Larger, clearer, slightly opaque icons -->
-        <div class="absolute text-6xl opacity-30 animate-float1 left-10 top-20">👗</div>
-        <div class="absolute text-6xl opacity-30 animate-float2 right-16 top-40">✈️</div>
-        <div class="absolute text-6xl opacity-30 animate-float3 left-20 bottom-28">💄</div>
-        <div class="absolute text-6xl opacity-30 animate-float4 right-24 bottom-20">🍕</div>
-        <div class="absolute text-6xl opacity-30 animate-float5 left-1/2 top-1/2">🏀</div>
-        <div class="absolute text-6xl opacity-30 animate-float3 left-1/4 top-1/3">🎮</div>
-        <div class="absolute text-6xl opacity-30 animate-float4 right-1/3 top-10">🛍️</div>
-       
-    </div>
-    <div class="w-full max-w-md p-8 bg-white shadow-lg bg-opacity-90 rounded-xl animate-fade-in-up">
-        <h1 class="mb-2 text-3xl font-bold text-center text-indigo-800">Login</h1>
-        <p class="mb-6 text-sm text-center text-gray-600">Secure access to your expenses dashboard</p>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div id="flash-messages" class="fixed z-50 w-full max-w-md transform -translate-x-1/2 top-5 left-1/2">
-              {% for category, message in messages %}
-                <div class="mb-4 p-4 rounded-lg text-white text-center
-                    {% if category == 'success' %}bg-green-500
-                    {% elif category == 'danger' %}bg-red-500
-                    {% elif category == 'warning' %}bg-yellow-500
-                    {% else %}bg-blue-500{% endif %} shadow-lg">
-              {{ message }}
-               </div>
-              {% endfor %}
-            </div>
-        {% endif %}
-    {% endwith %}
-        <form method="POST" action="" class="space-y-4">
-            {{ form.hidden_tag() }}
-            <div>
-                {{ form.email(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500", placeholder="Email") }}
-            </div>
-            <div class="relative">
-                {{ form.password(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500", placeholder="Password", id="password") }}
-                <button type="button" onclick="togglePassword()" class="absolute text-gray-500 right-3 top-3">
-                    👁️
-                </button>
-            </div>
-            <div>
-                {{ form.submit(class_="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition") }}
-            </div>
-        </form>
-
-        <div class="mt-4 text-sm text-center text-gray-700">
-            <a href="{{ url_for('forgot_password') }}" class="text-indigo-600 hover:underline">Forgot Password?</a>
-        </div>
-        <div class="mt-2 text-sm text-center text-gray-700">
-            <a href="{{ url_for('register') }}" class="text-indigo-600 hover:underline">Don't have an account? Sign Up</a>
-        </div>
-    </div>
-
-    <script>
-        function togglePassword() {
-            const password = document.getElementById("password");
-            password.type = password.type === "password" ? "text" : "password";
-        }
-    </script>
-
-    <style>
         @keyframes fade-in-up {
             0% {
                 opacity: 0;
@@ -100,26 +49,91 @@
         .animate-fade-in-up {
             animation: fade-in-up 0.8s ease-out;
         }
+
         #flash-messages div {
-  font-weight: 600;
-  font-size: 1rem;
-  user-select: none;
-}
-
+            font-weight: 600;
+            font-size: 1rem;
+            user-select: none;
+        }
     </style>
-    <script>
-  // Auto-hide flash messages after 5 seconds (5000ms)
-  setTimeout(() => {
-    const flash = document.getElementById('flash-messages');
-    if (flash) {
-      // fade out effect
-      flash.style.transition = 'opacity 0.5s ease-out';
-      flash.style.opacity = '0';
-      // remove from DOM after fade out
-      setTimeout(() => flash.remove(), 500);
-    }
-  }, 5000);
-</script>
+</head>
 
+<body class="flex flex-col min-h-screen bg-gradient-to-r from-indigo-800 to-pink-400">
+    <!-- Animated Floating Icons Background -->
+    <div class="absolute inset-0 pointer-events-none -z-10">
+        <div class="absolute text-6xl opacity-30 animate-float1 left-10 top-20">👗</div>
+        <div class="absolute text-6xl opacity-30 animate-float2 right-16 top-40">✈️</div>
+        <div class="absolute text-6xl opacity-30 animate-float3 left-20 bottom-28">💄</div>
+        <div class="absolute text-6xl opacity-30 animate-float4 right-24 bottom-20">🍕</div>
+        <div class="absolute text-6xl opacity-30 animate-float5 left-1/2 top-1/2">🏀</div>
+        <div class="absolute text-6xl opacity-30 animate-float3 left-1/4 top-1/3">🎮</div>
+        <div class="absolute text-6xl opacity-30 animate-float4 right-1/3 top-10">🛍️</div>
+    </div>
+
+    <!-- Main content wrapper -->
+    <main class="flex items-center justify-center flex-grow px-4">
+        <div class="w-full max-w-md p-8 bg-white shadow-lg bg-opacity-90 rounded-xl animate-fade-in-up">
+            <h1 class="mb-2 text-3xl font-bold text-center text-indigo-800">Login</h1>
+            <p class="mb-6 text-sm text-center text-gray-600">Secure access to your expenses dashboard</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div id="flash-messages" class="fixed z-50 w-full max-w-md transform -translate-x-1/2 top-5 left-1/2">
+                {% for category, message in messages %}
+                <div class="mb-4 p-4 rounded-lg text-white text-center
+                    {% if category == 'success' %}bg-green-500
+                    {% elif category == 'danger' %}bg-red-500
+                    {% elif category == 'warning' %}bg-yellow-500
+                    {% else %}bg-blue-500{% endif %} shadow-lg">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="" class="space-y-4">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.email(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500", placeholder="Email") }}
+                </div>
+                <div class="relative">
+                    {{ form.password(class_="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500", placeholder="Password", id="password") }}
+                    <button type="button" onclick="togglePassword()" class="absolute text-gray-500 right-3 top-3">
+                        👁️
+                    </button>
+                </div>
+                <div>
+                    {{ form.submit(class_="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition") }}
+                </div>
+            </form>
+
+            <div class="mt-4 text-sm text-center text-gray-700">
+                <a href="{{ url_for('forgot_password') }}" class="text-indigo-600 hover:underline">Forgot Password?</a>
+            </div>
+            <div class="mt-2 text-sm text-center text-gray-700">
+                <a href="{{ url_for('register') }}" class="text-indigo-600 hover:underline">Don't have an account? Sign Up</a>
+            </div>
+        </div>
+    </main>
+
+    
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("password");
+            password.type = password.type === "password" ? "text" : "password";
+        }
+
+        // Auto-hide flash messages after 5 seconds (5000ms)
+        setTimeout(() => {
+            const flash = document.getElementById('flash-messages');
+            if (flash) {
+                flash.style.transition = 'opacity 0.5s ease-out';
+                flash.style.opacity = '0';
+                setTimeout(() => flash.remove(), 500);
+            }
+        }, 5000);
+    </script>
 </body>
+
 </html>

@@ -447,6 +447,65 @@ def expense_history():
     )
 
 
+@app.route('/upload-expenses-excel', methods=['POST'])
+@login_required
+def upload_expenses_excel():
+    file = request.files.get('excel_file')
+    if not file or file.filename == '':
+        flash("No file selected", "error")
+        return redirect(url_for('expense_history'))
+
+    filename = secure_filename(file.filename)
+    df = pd.read_excel(file)
+
+    required_columns = {'date', 'category', 'amount', 'description'}
+    if not required_columns.issubset(df.columns):
+        flash("Invalid Excel format. Columns should be: date, category, amount, description", "error")
+        return redirect(url_for('expense_history'))
+
+    for _, row in df.iterrows():
+        try:
+            new_expense = Expense(
+                user_id=current_user.id,
+                date=row['date'],
+                category=row['category'],
+                amount=float(row['amount']),
+                description=row.get('description', '')
+            )
+            db.session.add(new_expense)
+        except Exception as e:
+            print("Error inserting row:", e)
+            continue
+
+    db.session.commit()
+    flash("Expenses uploaded successfully!", "success")
+    return redirect(url_for('expense_history'))
+
+@app.route('/download-excel-template')
+@login_required
+def download_excel_template():
+    from io import BytesIO
+    from flask import send_file
+
+    df = pd.DataFrame({
+        'date': ['2025-05-01'],
+        'category': ['Food'],
+        'amount': [250.00],
+        'description': ['Lunch at cafe']
+    })
+
+    output = BytesIO()
+    df.to_excel(output, index=False)
+    output.seek(0)
+
+    return send_file(
+        output,
+        download_name="expense_template.xlsx",
+        as_attachment=True,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+
 @app.route('/delete_expense/<int:expense_id>', methods=['POST'])
 @login_required
 def delete_expense(expense_id):
@@ -662,6 +721,129 @@ Admin Team
 
     return render_template('review_feedback.html', feedback=feedback, form=form, user=current_user)
 
+import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv()  # load .env variables
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+from flask import render_template, request
+from datetime import datetime
+from flask_login import login_required, current_user
+import re
+
+
+
+@app.route('/chat-ai', methods=['GET', 'POST'])
+@login_required
+def chat_ai():
+    response_text = None
+    user_id = current_user.id
+
+    if request.method == 'POST':
+        user_message = request.form.get('message', '').lower()
+        now = datetime.now()
+        year = now.year
+        month = now.month
+
+        # Greetings
+        if any(greet in user_message for greet in ['hi', 'hello', 'hey']):
+            response_text = (
+                f"👋 Hello {current_user.username}! I can help you with your expense summary or saving tips. Try asking:\n"
+                "• 'summary for March 2024'\n"
+                "• 'how to save money'\n"
+                "• 'summary for last year'"
+            )
+            return render_template('chat_ai.html', user=current_user, response=response_text)
+
+        # Month name mapping
+        months = {
+            'january': 1, 'february': 2, 'march': 3, 'april': 4,
+            'may': 5, 'june': 6, 'july': 7, 'august': 8,
+            'september': 9, 'october': 10, 'november': 11, 'december': 12
+        }
+
+        # Parse year modifiers
+        match_year = re.search(r'(\d+)\s+years?\s+ago', user_message)
+        if "last year" in user_message:
+            year -= 1
+        elif match_year:
+            year -= int(match_year.group(1))
+
+        explicit_year = re.search(r'\b(20[1-3][0-9])\b', user_message)
+        if explicit_year:
+            year = int(explicit_year.group(1))
+
+        found_month = next((m for m in months if m in user_message), None)
+        if found_month:
+            month = months[found_month]
+            if not explicit_year and month > now.month and "last" not in user_message:
+                year -= 1
+
+        if "last month" in user_message:
+            if now.month == 1:
+                month = 12
+                year -= 1
+            else:
+                month = now.month - 1
+
+        # Handle "summary" requests
+        if "summary" in user_message:
+            start_date = datetime(year, month, 1)
+            end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+
+            expenses = Expense.query.filter(
+                Expense.user_id == user_id,
+                Expense.date >= start_date,
+                Expense.date < end_date
+            ).all()
+
+            total_spent = sum(e.amount for e in expenses)
+            category_totals = {}
+            for e in expenses:
+                category_totals[e.category] = category_totals.get(e.category, 0) + e.amount
+
+            summary_lines = [
+                f"📅 **Summary for {start_date.strftime('%B %Y')}**",
+                f"💸 Total Spent: ₹{total_spent:.2f}",
+                "🧾 **Category Breakdown:**"
+            ]
+            for cat, amt in category_totals.items():
+                summary_lines.append(f"  • {cat}: ₹{amt:.2f}")
+
+            response_text = "\n".join(summary_lines)
+
+        # Handle "save" or "tips" requests
+        elif "save" in user_message or "tips" in user_message:
+            # Get recent expenses for context
+            start_date = datetime(year, month, 1)
+            end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+
+            expenses = Expense.query.filter(
+                Expense.user_id == user_id,
+                Expense.date >= start_date,
+                Expense.date < end_date
+            ).all()
+
+            category_totals = {}
+            for e in expenses:
+                category_totals[e.category] = category_totals.get(e.category, 0) + e.amount
+
+            prompt = (
+                f"I'm an expense management assistant. Here are the user's monthly expenses by category: "
+                f"{category_totals}. Please provide personalized money-saving tips in bullet points."
+            )
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            gemini_response = model.generate_content(prompt)
+            response_text = gemini_response.text
+
+        # For any other input, send user input directly to AI model for a generated reply
+        else:
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            gemini_response = model.generate_content(user_message)
+            response_text = gemini_response.text
+
+    return render_template('chat_ai.html', user=current_user, response=response_text)
 
 with app.app_context():
     db.create_all()
