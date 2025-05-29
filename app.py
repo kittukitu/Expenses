@@ -745,6 +745,7 @@ def chat_ai():
         now = datetime.now()
         year = now.year
         month = now.month
+        full_year_requested = False
 
         # Greetings
         if any(greet in user_message for greet in ['hi', 'hello', 'hey']):
@@ -763,24 +764,32 @@ def chat_ai():
             'september': 9, 'october': 10, 'november': 11, 'december': 12
         }
 
-        # Parse year modifiers
+        # Parse relative year modifiers
         match_year = re.search(r'(\d+)\s+years?\s+ago', user_message)
         if "last year" in user_message:
             year -= 1
+            full_year_requested = True
         elif match_year:
             year -= int(match_year.group(1))
+            full_year_requested = True
 
+        # Explicit year mentioned (e.g., 2023)
         explicit_year = re.search(r'\b(20[1-3][0-9])\b', user_message)
         if explicit_year:
             year = int(explicit_year.group(1))
+            full_year_requested = True
 
+        # Check for month mention
         found_month = next((m for m in months if m in user_message), None)
         if found_month:
             month = months[found_month]
+            full_year_requested = False  # specific month overrides full year
             if not explicit_year and month > now.month and "last" not in user_message:
-                year -= 1
+                year -= 1  # Adjust year if future month without explicit year
 
+        # Handle "last month"
         if "last month" in user_message:
+            full_year_requested = False
             if now.month == 1:
                 month = 12
                 year -= 1
@@ -789,8 +798,14 @@ def chat_ai():
 
         # Handle "summary" requests
         if "summary" in user_message:
-            start_date = datetime(year, month, 1)
-            end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+            if full_year_requested and not found_month:
+                start_date = datetime(year, 1, 1)
+                end_date = datetime(year + 1, 1, 1)
+                summary_title = f"{year}"
+            else:
+                start_date = datetime(year, month, 1)
+                end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
+                summary_title = start_date.strftime('%B %Y')
 
             expenses = Expense.query.filter(
                 Expense.user_id == user_id,
@@ -804,7 +819,7 @@ def chat_ai():
                 category_totals[e.category] = category_totals.get(e.category, 0) + e.amount
 
             summary_lines = [
-                f"📅 **Summary for {start_date.strftime('%B %Y')}**",
+                f"📅 **Summary for {summary_title}**",
                 f"💸 Total Spent: ₹{total_spent:.2f}",
                 "🧾 **Category Breakdown:**"
             ]
@@ -815,7 +830,6 @@ def chat_ai():
 
         # Handle "save" or "tips" requests
         elif "save" in user_message or "tips" in user_message:
-            # Get recent expenses for context
             start_date = datetime(year, month, 1)
             end_date = datetime(year + 1, 1, 1) if month == 12 else datetime(year, month + 1, 1)
 
@@ -837,7 +851,7 @@ def chat_ai():
             gemini_response = model.generate_content(prompt)
             response_text = gemini_response.text
 
-        # For any other input, send user input directly to AI model for a generated reply
+        # Fallback for other queries
         else:
             model = genai.GenerativeModel("gemini-1.5-flash")
             gemini_response = model.generate_content(user_message)
